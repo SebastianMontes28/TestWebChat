@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestWebSocket</title>
+</head>
+<body>
+    <button onclick="consumoAccess()">Iniciar consumo</button>
+    <script>
+        function consumo(){
+            console.log("Inicio el consumo");
+            const wsGenesys = new WebSocket('wss://webmessaging.mypurecloud.com/v1?deploymentId=4d0255c2-3fea-4dc9-a145-569548566319');
+            wsGenesys.onopen = () => {
+                console.log("Conexion abierta")
+            }
+
+            console.log(crypto.randomUUID());
+            // Cerrar después de 10 segundos
+            setTimeout(() => {
+                console.log("Cerrando WebSocket...");
+                wsGenesys.close();
+            }, 5000);
+        }
+        function consumoAccess(){
+            // Reemplaza con tus credenciales
+const clientId = 'aeea78db-2d9a-4185-8a1b-7274def8e222';
+const clientSecret = 'JAUE4l1lQcjhvamAQjWVtykPq-_BEGEya5q6S7wF2pI';
+
+const url = 'https://login.mypurecloud.com/oauth/token';
+
+const headers = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'Authorization': 'Basic ' + btoa(`${clientId}:${clientSecret}`)
+};
+
+// Cuerpo de la petición (ajustar según el tipo de grant necesario)
+const body = new URLSearchParams({
+  'grant_type': 'client_credentials'
+});
+
+fetch(url, {
+  method: 'POST',
+  headers: headers,
+  body: body
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Token obtenido:', data);
+  })
+  .catch(error => {
+    console.error('Error realizando el request:', error);
+  });
+
+        }
+    </script>
+</body>
+</html>
